@@ -16,12 +16,12 @@ The script displays results of the update.
 1. Download `update_block_instances.php` and place it in the root of your Moodle installation (same place as `config.php`).
 2. Change these settings:
 <pre>
-/* -------------------- Settings ---------------------- */
-$search    = 'domain.com/vle';
-$replace   = 'vle.domain.com';
+    /* -------------------- Settings ---------------------- */
+    $search    = 'domain.com/vle';
+    $replace   = 'vle.domain.com';
 
-$case_sensitive = false; // false = Match 'vle' and 'VLE'
-/* ---------------------------------------------------- */
+    $case_sensitive = false; // false = Match 'vle' and 'VLE'
+    /* ---------------------------------------------------- */
 </pre>
  * `$search` = your old URL/text.
  * `$replace` = your new URL/text.
