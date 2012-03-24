@@ -9,10 +9,10 @@ if (!isadmin()) {
 
 
 /* -------------------- Settings ---------------------- */
-$search    = 'clg.conel.ac.uk/vle';
-$replace   = 'vle.conel.ac.uk';
+$search    = 'domain.com/vle';
+$replace   = 'vle.domain.com';
 
-$case_sensitive = false; // false = Match 'VLE' and 'vle'
+$case_sensitive = false; // false = Match 'vle' and 'VLE'
 /* ---------------------------------------------------- */
 
 
