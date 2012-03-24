@@ -21,11 +21,11 @@ Results are displayed in the browser.
 3. Run it by pointing your browser to: `http://your-moodle.com/update_block_instances.php`
 
 
-### Note
-You must be logged in as a Moodle admin to run this script.  
-Can be used to update text inside HTML blocks also.
+### Notes
+* You must be logged in as a Moodle admin to run this script.  
+* Can be used to update text inside HTML blocks also.
 
-### Why Created
+### Why?
 The college I work at changed the URL of our Moodle from `domain.com/vle` to `vle.domain.com`.  
 To update links stored in our Moodle database we did an SQL dump of our Moodle database then ran the following `sed` command to replace old URLs with the new URL: `sed -e 's/domain.com\/vle/vle.domain.com/gi' oldmysqldump.sql > newmysqldump.sql`  
 This successfully updated URLs inside our Moodle database. It did NOT update links inside HTML blocks. Turns out HTML blocks are stored inside the `block_instance` table as serialized block objects which are then base64_encoded. Our `sed` command cannot update base64_encoded content.
