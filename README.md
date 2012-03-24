@@ -1,4 +1,4 @@
-## Scripts I've created for Moodle (1.9)
+## Scripts for Moodle (1.9)
 
 ### update_block_instances.php
 This script updates URLs stored inside HTML blocks in Moodle.   
