@@ -19,3 +19,4 @@ The script displays results of the update.
 * $replace. Your new URL/text.
 * $case_sensitive. If false (default) a search for 'vle' will match both 'vle' and 'VLE'.
 3. Run it by pointing your browser to: http://your-moodle.com/update_block_instances.php
+4. Note: you must be logged in as a Moodle admin to run this script.
