@@ -5,8 +5,8 @@ require_login();
 if (!isadmin()) error('Only the administrator can access this page!', $CFG->wwwroot);
 
 /* ---------------------- Settings ------------------------ */
-    $search    = 'domain.com/VLE/';
-    $replace   = 'vle.domain.com';
+    $search    = 'https://moodle-backup/stats/index.php?nocache=20110408142940';
+    $replace   = 'https://moodle-backup/stats/index.php?nocache=20120408142940';
 
     $case_sensitive = false; // false = Match 'vle' and 'VLE'
 /* -------------------------------------------------------- */
@@ -19,7 +19,7 @@ $records  = array_merge($records1, $records2);
 
 if (count($records > 0)) {
 
-    echo '<h2>Replacing \'<span style="color:red;">'. $search .'</span>\' with \'<span style="color:green;">'. $replace .'</span>\' inside block content.</h2>';
+    echo '<h2>Replacing <span style="color:red;">'. $search .'</span> with <span style="color:green;">'. $replace .'</span> inside block content.</h2>';
     echo '<h3>'. count($records) .' non-empty block instances found</h3>';
     echo '<pre>';
 
@@ -31,7 +31,7 @@ if (count($records > 0)) {
         $c++;
 
         $configdata = unserialize(base64_decode($record->configdata));
-        if ($configdata->text !== NULL) {
+        if ($configdata->text === NULL) {
             echo 'No content</p>';
             continue;
         }
@@ -50,7 +50,7 @@ if (count($records > 0)) {
 
         $record->configdata = base64_encode(serialize($configdata));
 
-        $table = (isset($record->page_id)) ? 'block_instance' : 'block_pinned';
+        $table = (isset($record->pageid)) ? 'block_instance' : 'block_pinned';
 
         if (update_record($table, $record)) {
             echo '<strong style="color:green;">Found and replaced!</strong></p>';
@@ -62,9 +62,11 @@ if (count($records > 0)) {
     }
 
     echo '</pre>';
-    echo "<h3>$found_count blocks updated to use the string '$replace' instead of '$search'.</h3>";
+    $block_text = ($found_count == '1') ? 'block' : 'blocks';
+    echo "<h3>$found_count $block_text updated.</h3>";
 
 } else {
     print_heading('No blocks found');
 }
+
 ?>
