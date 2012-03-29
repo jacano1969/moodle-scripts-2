@@ -5,8 +5,8 @@ require_login();
 if (!isadmin()) error('Only the administrator can access this page!', $CFG->wwwroot);
 
 /* ---------------------- Settings ------------------------ */
-    $search    = 'https://moodle-backup/stats/index.php?nocache=20110408142940';
-    $replace   = 'https://moodle-backup/stats/index.php?nocache=20120408142940';
+    $search    = 'domain.com/VLE';
+    $replace   = 'vle.domain.com';
 
     $case_sensitive = false; // false = Match 'vle' and 'VLE'
 /* -------------------------------------------------------- */
