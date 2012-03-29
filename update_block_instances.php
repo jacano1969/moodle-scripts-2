@@ -2,10 +2,7 @@
 
 require_once('config.php');
 require_login(); 
-
-if (!isadmin()) {
-    error('Only the administrator can access this page!', $CFG->wwwroot);
-}
+if (!isadmin()) error('Only the administrator can access this page!', $CFG->wwwroot);
 
 /* ---------------------- Settings ------------------------ */
     $search    = 'domain.com/VLE/';
@@ -15,64 +12,59 @@ if (!isadmin()) {
 /* -------------------------------------------------------- */
 
 
+// Get non-empty block instances
 $records1 = get_records_select('block_instance', 'configdata != "" AND configdata != "Tjs="');
 $records2 = get_records_select('block_pinned', 'configdata != "" AND configdata != "Tjs="');
 $records  = array_merge($records1, $records2);
 
 if (count($records > 0)) {
 
-    echo "<h2>Replacing '<span style=\"color:red;\">$search</span>' with '<span style=\"color:green;\">$replace</span>' inside block content.</h2>";
-    echo "<h3>".count($records)." non-empty block instances found</h3>";
+    echo '<h2>Replacing \'<span style="color:red;">'. $search .'</span>\' with \'<span style="color:green;">'. $replace .'</span>\' inside block content.</h2>';
+    echo '<h3>'. count($records) .' non-empty block instances found</h3>';
     echo '<pre>';
 
     $found_count = 0;
     $c = 1;
     foreach ($records as $record) {
         
-        $result = "<p><strong>Block $c</strong> - ";
+        echo "<p><strong>Block $c</strong> - ";
+        $c++;
 
         $configdata = unserialize(base64_decode($record->configdata));
         if ($configdata->text !== NULL) {
-        
-            // Allows URL replacement inside links
-            $html = htmlspecialchars($configdata->text);
-            $string_found = ($case_sensitive) ? strpos($html, $search) : stripos($html, $search);
-
-            if ($string_found !== false) {
-            
-                $configdata->text = ($case_sensitive) ?
-                    htmlspecialchars_decode(str_replace($search, $replace, $html)) : 
-                    htmlspecialchars_decode(str_ireplace($search, $replace, $html));
-
-                $record->configdata = base64_encode(serialize($configdata));
-                
-                $table = (isset($record->page_id)) ? 'block_instance' : 'block_pinned';
-                if (update_record($table, $record)) {
-                    $result .= '<strong style="color:green;">Found and replaced!</strong>';
-                    $found_count++;
-                } else {
-                    $result .= 'FAILed to update block_instance :*(';
-                }
-                
-            } else {
-                $result .= 'Search string not found';
-            }
-            
-        } else {
-            $result .= 'No content';
-
+            echo 'No content</p>';
+            continue;
         }
-        echo $result . '</p>';
-        $c++;
         
+        // Allows URL replacement inside links
+        $html = htmlspecialchars($configdata->text);
+        $string_found = ($case_sensitive) ? strpos($html, $search) : stripos($html, $search);
+        if ($string_found === false) {
+            echo 'Search string not found</p>';
+            continue;
+        }
+            
+        $configdata->text = ($case_sensitive) ?
+            htmlspecialchars_decode(str_replace($search, $replace, $html)) : 
+            htmlspecialchars_decode(str_ireplace($search, $replace, $html));
+
+        $record->configdata = base64_encode(serialize($configdata));
+
+        $table = (isset($record->page_id)) ? 'block_instance' : 'block_pinned';
+
+        if (update_record($table, $record)) {
+            echo '<strong style="color:green;">Found and replaced!</strong></p>';
+            $found_count++;
+        } else {
+            echo 'Failed to update block</p>';
+        }
+                
     }
 
     echo '</pre>';
     echo "<h3>$found_count blocks updated to use the string '$replace' instead of '$search'.</h3>";
 
 } else {
-    print_heading('FAIL!');
-    echo '<p>No block instances found.</p>';
+    print_heading('No blocks found');
 }
-
 ?>
