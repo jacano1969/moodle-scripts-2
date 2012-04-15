@@ -1,6 +1,6 @@
 <?php
 
-require_once('config.php');
+require('config.php');
 require_login(); 
 if (!isadmin()) error('Only the administrator can access this page!', $CFG->wwwroot);
 
